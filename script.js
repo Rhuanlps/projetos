@@ -14,17 +14,31 @@ document.addEventListener('DOMContentLoaded', function(){
         const imagens = baseImagens[categoria];
 
         imagens.forEach(img => {
-            galeria.innerHTML += '<div class="imagem-item" > <img src="imagens/'+img +'" />  </div>';
+            galeria.innerHTML += '<div class="imagem-item" > <img src="imagens/' +img + '" alt=" +img+ " />  </div>';
         })
 
     }
     
     function ordenaImagem(ordem){
-        
-        const imagem = Array.from(document.querySelectorAll("#galeria-imagens .imagem-item"));
+        console.log(ordem);
+        const imagens = Array.from(document.querySelectorAll("#galeria-imagens .imagem-item"));
         
         imagens.sort((a, b) => {
-            console.log(a);
+
+            const nameA = a.querySelector('img').getAttribute('alt');
+            const nameB = b.querySelector('img').getAttribute('alt');
+
+            //operador ternário - se for true ? se não :
+            return ordem == 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+
+        })
+
+        const galeria = document.getElementById('galeria-imagens');
+
+        galeria.innerHTML = ''; //esvazia box das imagens
+
+        imagens.forEach(imagem => {
+            galeria.appendChild(imagem); //adiciona as imagens novamente, agora ordenada
         })
 
     }
@@ -37,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function(){
             carregaImagens(categoria);
         }
 
-        if(event.target.classList.contains('botao-ordenar')){
+        if (event.target.classList.contains('botao-ordenar')) {
             const ordem = event.target.dataset.ordem;
             ordenaImagem(ordem);
         }
